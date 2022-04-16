@@ -1,0 +1,52 @@
+
+Arduino code used for the Ultrasonic Sensor Sunglasses
+
+
+
+#define trigPin 8  // Aceste linii atribuie nume valorilor
+#define echoPin 7  // astfel încât să poată fi identificate cu ușurință.
+#define buzzer 12  // Acestea sunt setate înaintea codului
+
+/* Această secțiune a codului de mai jos rulează o singură dată.
+  * Permite monitorului serial să vadă ieșirea și
+  * setează pinii la intrare sau la ieșire.
+*/
+void setup() {
+  Serial.begin (9600); 
+  pinMode(trigPin, OUTPUT); 
+  pinMode(echoPin, INPUT);  
+  pinMode(buzzer, OUTPUT);
+}
+
+/* Partea rămasă a codului rulează într-o buclă constantă.
+  * Declanșează senzorul ultrasonic și calculează
+  * timpul necesar pentru revenirea undelor sonore. Se convertește
+  * timpul în milisecunde în distanță în centimetri.
+  */
+void loop() { 
+  long duration, distance;
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distance = (duration/2) / 29.1;
+  Serial.print(distance);
+    Serial.println(" cm");
+  
+// Această parte a codului de mai jos determină dacă
+// bip în funcție de distanța detectată. Dacă obiectul
+// este în 70porniți bipurile.
+  
+if (distance > 20 and distance < 70) { 
+    tone(buzzer,100,50);  // Bipuri intermitente
+    }
+    if (distance > 0 and distance < 21) { 
+    tone(buzzer,100);// Bip lung și continuu
+  }
+  else {
+    }
+  delay (500);
+  
+} 
